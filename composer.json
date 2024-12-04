@@ -1,0 +1,75 @@
+{
+    "name": "laravel-zero/laravel-zero",
+    "description": "The Laravel Zero Framework.",
+    "keywords": ["framework", "laravel", "laravel zero", "console", "cli"],
+    "homepage": "https://laravel-zero.com",
+    "type": "project",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/laravel-zero/laravel-zero/issues",
+        "source": "https://github.com/laravel-zero/laravel-zero"
+    },
+    "authors": [
+        {
+            "name": "Nuno Maduro",
+            "email": "enunomaduro@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3.0",
+        "illuminate/database": "^11.34.2",
+        "laravel-zero/framework": "^11.0.3",
+        "laravel/serializable-closure": "^2.0"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.24.1",
+        "larastan/larastan": "^2.9.12",
+        "laravel/pint": "^1.18.3",
+        "mockery/mockery": "^1.6.12",
+        "pestphp/pest": "^3.6.0",
+        "pestphp/pest-plugin-type-coverage": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "bin": ["heminders"],
+    "scripts": {
+        "lint": [
+            "pint"
+        ],
+        "refactor": "rector",
+        "test:lint": [
+            "pint --test"
+        ],
+        "test:types": [
+            "phpstan analyse"
+        ],
+        "test:type-coverage": "pest --type-coverage --min=100",
+        "test:unit": "pest --parallel --ci --coverage --exactly=100.0",
+        "test": [
+            "@test:lint",
+            "@test:types",
+            "@test:type-coverage",
+            "@test:unit"
+        ]
+    }
+}
