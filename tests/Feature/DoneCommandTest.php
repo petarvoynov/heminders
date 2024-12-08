@@ -6,9 +6,14 @@ use App\Commands\CheckMeCommand;
 use App\Commands\DoneCommand;
 use App\Enums\CheckType;
 use App\Models\Check;
+use App\Models\TrackedChecker;
 use LaravelZero\Framework\Exceptions\ConsoleException;
 
 it('should mark all checks as done', function () {
+    TrackedChecker::factory()->create(['type' => CheckType::Water]);
+    TrackedChecker::factory()->create(['type' => CheckType::Posture]);
+    TrackedChecker::factory()->create(['type' => CheckType::Stretch]);
+
     $this->artisan(DoneCommand::class)
         ->expectsOutput('Marked [water, stretch, posture] checks as done.')
         ->assertExitCode(0);
@@ -19,6 +24,7 @@ it('should mark all checks as done', function () {
 });
 
 it('bails out if the given check type is invalid', function () {
+    TrackedChecker::factory()->create();
     $this->artisan(DoneCommand::class, ['types' => ['invalid']])->run();
 })->throws(
     ConsoleException::class,
@@ -41,6 +47,7 @@ it('marks the posture as done', function () {
 });
 
 test('output with when the user posture check was done 1 hour ago', function () {
+    TrackedChecker::factory()->create(['type' => CheckType::Stretch]);
     $this->artisan(DoneCommand::class, ['types' => ['stretch']])->run();
 
     $this->travel(1)->hours();
@@ -51,6 +58,7 @@ test('output with when the user posture check was done 1 hour ago', function () 
 });
 
 test('output with when the user stretch 8 hour ago', function () {
+    TrackedChecker::factory()->create(['type' => CheckType::Posture]);
     $this->artisan(DoneCommand::class, ['types' => ['posture']])->run();
 
     $this->travel(8)->hours();
